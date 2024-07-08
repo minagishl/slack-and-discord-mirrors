@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   Client,
   GatewayIntentBits,
@@ -314,7 +313,7 @@ async function getImageBuffer(url: string): Promise<Buffer> {
     });
 
     // Convert the response data to a Buffer
-    const buffer = Buffer.from(response.data);
+    const buffer = Buffer.from(response.data as ArrayBuffer);
 
     // Process the image with sharp
     const imageBuffer = await sharp(buffer).toBuffer();
@@ -351,9 +350,9 @@ async function loadEvents(): Promise<void> {
 
   events.forEach((event) => {
     if (event[2]?.once === true) {
-      client.once(event[0], event[1]);
+      client.once(event[0], event[1] as () => void);
     } else {
-      client.on(event[0], event[1]);
+      client.on(event[0], event[1] as () => void);
     }
   });
 }
